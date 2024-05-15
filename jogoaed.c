@@ -15,13 +15,14 @@ typedef struct No {
     char dica1[100];  
     char dica2[100];  
     char dica3[100];  
-    char resposta[30]; 
+    char resposta[30];
+    char resposta_eng[30];
     struct No* prox;
     struct No* ant;
 } No;
 
 
-No* criarNo(const char* dica1, const char* dica2, const char* dica3, const char* resposta) {
+No* criarNo(const char* dica1, const char* dica2, const char* dica3, const char* resposta,char* resposta_eng) {
     No* novoNo = (No*)malloc(sizeof(No));
     if (novoNo == NULL) {
         fprintf(stderr, "Erro: Memória insuficiente.\n");
@@ -31,14 +32,15 @@ No* criarNo(const char* dica1, const char* dica2, const char* dica3, const char*
     strcpy(novoNo->dica2, dica2);
     strcpy(novoNo->dica3, dica3);
     strcpy(novoNo->resposta, resposta);
+    strcpy(novoNo->resposta_eng, resposta_eng);
     novoNo->prox = NULL;
     novoNo->ant = NULL;
     return novoNo;
 }
 
 
-void adicionarNo(No** cabeca, const char* dica1, const char* dica2, const char* dica3, const char* resposta) {
-    No* novoNo = criarNo(dica1, dica2, dica3, resposta);
+void adicionarNo(No** cabeca, const char* dica1, const char* dica2, const char* dica3, const char* resposta,char* resposta_eng) {
+    No* novoNo = criarNo(dica1, dica2, dica3, resposta,resposta_eng);
     if (*cabeca == NULL) {
         *cabeca = novoNo;
     } else {
@@ -70,7 +72,7 @@ void jogarQuiz(No* cabeca, Jogador* jogador) {
         printf("Dica 2: %s\n", atual->dica2);
         printf("Dica 3: %s\n", atual->dica3);
 
-  
+
         char palpite[30];
         printf("\nAdivinhe o nome do país - lembre-se de colocar os acentos se necessário (ou 'sair' para encerrar): ");
         scanf(" %[^\n]", palpite);
@@ -80,17 +82,23 @@ void jogarQuiz(No* cabeca, Jogador* jogador) {
             break;
         }
 
-        if (strcasecmp(palpite, atual->resposta) == 0) {
+        if (strcasecmp(palpite, atual->resposta) == 0 || strcasecmp(palpite, atual->resposta_eng) == 0) {
+            printf("\033[0;32m"); //Set Color to Green
             printf("\nResposta correta! +10 pontos.\n");
+            printf("\033[0m"); //Resets the text to default color
             pontuacao += 10;
         } else {
-            printf("\nResposta incorreta. A resposta correta era: %s\n", atual->resposta);
+            printf("\033[0;31m"); //Set the text to the color red
+            printf("\nResposta incorreta."); 
+            printf("\033[0;32m"); //Set Color to Green
+            printf("\nA resposta correta era: %s\n", atual->resposta);
+            printf("\033[0m"); //Resets the text to default color
         }
 
         atual = atual->prox; 
     }
 
-    
+
     jogador->pontuacao = pontuacao;
     printf("Pontuação final: %d pontos.\n", jogador->pontuacao);
 }
@@ -121,101 +129,121 @@ int main() {
     adicionarNo(&paises, "É conhecido por seus fiordes impressionantes.",
                "Sua capital é Oslo.",
                "É famoso por sua qualidade de vida e altos padrões sociais.",
-               "Noruega");
+               "Noruega",
+               "Norway");
 
     adicionarNo(&paises, "É o maior país do mundo em área territorial.",
                "Possui uma extensa rede ferroviária conhecida como o Transiberiano.",
                "Moscou é sua capital.",
-               "Rússia");
+               "Rússia",
+               "Russia");
     adicionarNo(&paises, "É conhecido por suas pirâmides antigas e faraós.",
            "O rio Nilo é fundamental para sua história e economia.",
            "Sua capital é Cairo.",
-           "Egito");
+           "Egito",
+           "Egypt");
 
     adicionarNo(&paises, "É o lar da Estátua da Liberdade.",
        "Seu sistema de entretenimento em Hollywood é famoso globalmente.",
        "A capital do país é Washington, D.C.",
-       "Estados Unidos");
+       "Estados Unidos",
+       "United states");
 
     adicionarNo(&paises, "É famoso por sua culinária sofisticada e vinhos de alta qualidade.",
        "Tem uma torre emblemática que é uma das Sete Maravilhas do Mundo Moderno.",
        "Sua capital é Paris.",
-       "França");
+       "França",
+       "France");
 
     adicionarNo(&paises, "É uma nação insular com uma fauna única, incluindo o canguru.",
        "Seu maior recife é a Grande Barreira de Corais.",
        "A Opera House de Sydney é um ícone mundial.",
-       "Austrália");
+       "Austrália",
+       "Australia");
 
     adicionarNo(&paises, "É um país escandinavo com alta qualidade de vida.",
        "Conhecido por seu design minimalista e eficiência urbana.",
        "Sua capital é Estocolmo.",
-       "Suécia");
+       "Suécia",
+       "Sweden");
 
     adicionarNo(&paises, "Tem uma das economias mais avançadas do mundo.",
        "Conhecido por sua tecnologia de ponta e cultura pop.",
        "Sua capital é Tóquio.",
-       "Japão");
+       "Japão",
+       "Japan");
 
     adicionarNo(&paises, "É o maior país da América do Sul.",
        "Abriga a Floresta Amazônica, a maior floresta tropical do mundo.",
        "Sua capital é Brasília.",
-       "Brasil");
+       "Brasil",
+       "Brazil");
 
     adicionarNo(&paises, "É um país insular com uma paisagem marcante de montanhas e fiordes.",
        "Conhecido por sua população amigável e padrões de vida elevados, bem como o banho nas piscinas termais.",
        "Sua capital é Reykjavik",
-       "Islândia");
+       "Islândia",
+       "Iceland");
 
     adicionarNo(&paises, "Foi o centro da civilização greco-romana.",
        "Roma é sua capital.",
        "É conhecido por sua rica herança artística e arquitetônica.",
-       "Itália");
+       "Itália",
+       "Italy");
 
     adicionarNo(&paises, "Fica na Europa Ocidental e é famoso por seus canais e bicicletas.",
        "Sua capital é Amsterdã.",
        "Conhecido por suas flores, especialmente tulipas.",
-       "Holanda");
+       "Holanda",
+       "Netherlands");
 
     adicionarNo(&paises, "Fica no sul da Ásia e é conhecido por sua rica herança cultural e espiritual.",
        "Sua capital é Nova Deli",
        "É o lar do famoso monumento Taj Mahal.",
-       "Índia");
+       "Índia",
+       "India");
 
     adicionarNo(&paises, "É uma nação no leste da Ásia conhecida por sua alta tecnologia e tradições antigas.",
        "Sua capital é Seul.",
        "É um líder global em eletrônicos e entretenimento.",
-       "Coreia do Sul");
+       "Coreia do Sul",
+       "South Korea");
 
     adicionarNo(&paises, "É um país na América do Norte com uma diversidade geográfica impressionante.",
        "Sua capital é Ottawa.",
        "Famoso por suas Cataratas do Niágara.",
-       "Canadá");
+       "Canadá",
+       "Canada");
 
     adicionarNo(&paises, "Fica no sul da Europa e é conhecido por sua rica história e cultura.",
        "Sua capital é Atenas.",
        "Berço da democracia e lar de monumentos históricos como a Acrópole.",
-       "Grécia");
+       "Grécia",
+       "Greece");
 
     adicionarNo(&paises, "É uma ilha caribenha conhecida por suas praias deslumbrantes e música reggae.",
        "Sua capital é Kingston.",
        "Lar do famoso cantor Bob Marley.",
+       "Jamaica",
        "Jamaica");
 
     adicionarNo(&paises, "É um país localizado no continente asiático, especificamente na Ásia Oriental",
        "Famoso por sua Grande Muralha e pela Cidade Proibida.",
        "Sua capital é Pequim.",
+       "China",
        "China");
 
     adicionarNo(&paises, "É conhecido por seus templos antigos, incluindo Angkor Wat.",
        "Sua capital é Phnom Penh.",
        "Tem uma rica história marcada por reinos poderosos.",
-       "Camboja");
+       "Camboja",
+       "Cambodia");
 
 
     printf("Bem-vindo ao Geoguess!\n");
     printf("Esse jogo foi desenvolvido por alunos da Cesar School com o intuito de promover a aprendizagem acerca dos Países do mundo.\n");
     printf("Serão dadas 3 dicas para que jogador tente acertar a qual país elas se referem.\n");
+    printf("Resposta poderão ser em PT-Br ou EN-Us\n");
     printf("Vamos jogar?\n\n");
 
     Jogador jogadores[MAX_JOGADORES];
