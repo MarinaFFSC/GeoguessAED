@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-#define MAX_JOGADORES 30 // Número máximo de jogadores no ranking
+#define MAX_JOGADORES 30 
 
 typedef struct Jogador {
     char nome[50];
