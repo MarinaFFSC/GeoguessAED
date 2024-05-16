@@ -83,16 +83,16 @@ void jogarQuiz(No* cabeca, Jogador* jogador) {
         }
 
         if (strcasecmp(palpite, atual->resposta) == 0 || strcasecmp(palpite, atual->resposta_eng) == 0) {
-            printf("\033[0;32m"); //Set Color to Green
+            printf("\033[0;32m"); // Cor Verde
             printf("\nResposta correta! +10 pontos.\n");
-            printf("\033[0m"); //Resets the text to default color
+            printf("\033[0m"); // Cor padrão
             pontuacao += 10;
         } else {
-            printf("\033[0;31m"); //Set the text to the color red
+            printf("\033[0;31m"); // Cor Vermelho
             printf("\nResposta incorreta."); 
-            printf("\033[0;32m"); //Set Color to Green
+            printf("\033[0;32m"); // Cor Verde
             printf("\nA resposta correta era: %s\n", atual->resposta);
-            printf("\033[0m"); //Resets the text to default color
+            printf("\033[0m"); // Cor padrão
         }
 
         atual = atual->prox; 
